@@ -7,7 +7,6 @@ export const JWTAuthMiddleware =async(req, res, next)=> {
         }else{
             const token = req.headers.authorization.replace("Bearer ", "")
             const payload = jwt.verify(token, process.env.MY_SECRET_KEY)
-    
             req.user = {
                 _id:payload._id,
             }
