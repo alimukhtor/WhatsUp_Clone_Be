@@ -10,23 +10,27 @@ const UserSchema = new Schema({
     googleId:{type:String}
 }, {timestamps:true})
 
+
 UserSchema.pre("save", async function(next){
     const newUser = this
+    console.log(newUser);
+
+    if (newUser.googleId) return next() // doesnt go past this
+
     const plainPassword = newUser.password
-    console.log("pass",plainPassword);
     const hashPW = await bcrypt.hash(plainPassword, 10)
     newUser.password = hashPW
     next()
 })
 
 UserSchema.methods.toJSON = function () {
-    const userInfo = this   
+    const userInfo = this
     const userObject = userInfo.toObject()
     delete userObject.password
     delete userObject.__v
   
     return userObject
-}
+  }
 
 UserSchema.statics.checkCredentials = async function(email, plainPassword){
     const user = await this.findOne({email})
@@ -40,5 +44,6 @@ UserSchema.statics.checkCredentials = async function(email, plainPassword){
     }else{
         return null
     }
-} 
+}  
+
 export default model("User", UserSchema)

@@ -30,7 +30,7 @@ const googleStrategy = new GoogleStrategy(
         });
 
         const savedUser = await newUser.save();
-        console.log("hi", newUser);
+        
         const tokens = await JWTAuthenticate(savedUser)
         // jwt.sign({ _id: savedUser._id}, process.env.MY_SECRET_KEY, {expiresIn:"1w"})
         passportNext(null, { tokens });
