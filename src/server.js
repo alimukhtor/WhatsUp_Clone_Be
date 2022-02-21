@@ -3,7 +3,7 @@ import cors from 'cors'
 import listEndpoints from 'express-list-endpoints'
 import mongoose from 'mongoose'
 import passport from 'passport'
-import { unauthorizedHandler, forbiddenHandler, catchAllHandler} from './errorHandler/errorHandlers.js'
+// import { unauthorizedHandler, forbiddenHandler, catchAllHandler} from './errorHandler/errorHandlers.js'
 import googleStrategy from './auth/oauth.js'
 
 
@@ -17,6 +17,7 @@ import userRouter from './users/index.js'
 passport.use("google", googleStrategy)
 server.use(cors())
 server.use(express.json())
+server.use(passport.initialize())
 
 // *************************************** ROUTES ********************************
 
@@ -26,9 +27,9 @@ server.use("/users", userRouter)
 
 // ****************************** ERROR HANDLERS **************************
 
-server.use(unauthorizedHandler)
-server.use(forbiddenHandler)
-server.use(catchAllHandler)
+// server.use(unauthorizedHandler)
+// server.use(forbiddenHandler)
+// server.use(catchAllHandler)
 
 
 // ************************************** DB CONNECTIONS **********************************

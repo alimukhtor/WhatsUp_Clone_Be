@@ -1,7 +1,9 @@
 import passport from "passport";
 import GoogleStrategy from "passport-google-oauth20";
-import UsersModel from "../users/schema.js";
+import UserModel from "../users/schema.js";
+import jwt from 'jsonwebtoken'
 import { JWTAuthenticate } from "./tools.js";
+// import { JWTAuthenticate } from "./tools.js";
 
 const googleStrategy = new GoogleStrategy(
   {
@@ -13,23 +15,24 @@ const googleStrategy = new GoogleStrategy(
     try {
       console.log("PROFILE: ", profile);
 
-      const user = await UsersModel.findOne({ googleId: profile.id });
+      const user = await UserModel.findOne({ googleId: profile.id });
 
       if (user) {
-        const tokens = await JWTAuthenticate(user);
+        const tokens = await JWTAuthenticate(user)
+        jwt.sign({ _id: user._id}, process.env.MY_SECRET_KEY, {expiresIn:"1w"})
 
         passportNext(null, { tokens });
       } else {
-        const newUser = new UsersModel({
-          name: profile.name.givenName,
-          surname: profile.name.familyName,
+        const newUser = new UserModel({
           email: profile.emails[0].value,
+          avatar:profile.photos[0].value,
           googleId: profile.id,
         });
 
         const savedUser = await newUser.save();
-        const tokens = await JWTAuthenticate(savedUser);
-        // 5. Next
+        console.log("hi", newUser);
+        const tokens = await JWTAuthenticate(savedUser)
+        // jwt.sign({ _id: savedUser._id}, process.env.MY_SECRET_KEY, {expiresIn:"1w"})
         passportNext(null, { tokens });
       }
     } catch (error) {

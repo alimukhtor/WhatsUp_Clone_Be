@@ -6,19 +6,21 @@ const UserSchema = new Schema({
     username:{type:String},
     email:{type:String, unique:true},
     password:{type:String},
-    avatar:{type:String}
-})
+    avatar:{type:String},
+    googleId:{type:String}
+}, {timestamps:true})
 
 UserSchema.pre("save", async function(next){
     const newUser = this
     const plainPassword = newUser.password
-        const hashPW = await bcrypt.hash(plainPassword, 10)
-        newUser.password = hashPW
-        next()
+    console.log("pass",plainPassword);
+    const hashPW = await bcrypt.hash(plainPassword, 10)
+    newUser.password = hashPW
+    next()
 })
 
 UserSchema.methods.toJSON = function () {
-    const userInfo = this
+    const userInfo = this   
     const userObject = userInfo.toObject()
     delete userObject.password
     delete userObject.__v
