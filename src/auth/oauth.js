@@ -19,7 +19,7 @@ const googleStrategy = new GoogleStrategy(
 
       if (user) {
         const tokens = await JWTAuthenticate(user)
-        jwt.sign({ _id: user._id}, process.env.MY_SECRET_KEY, {expiresIn:"1w"})
+        // jwt.sign({ _id: user._id}, process.env.MY_SECRET_KEY, {expiresIn:"1w"})
 
         passportNext(null, { tokens });
       } else {

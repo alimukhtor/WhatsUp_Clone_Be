@@ -24,11 +24,9 @@ userRouter.get("/googleLogin", passport.authenticate("google", { scope: ["profil
 
 userRouter.get("/googleRedirect", passport.authenticate("google", {failureRedirect:`${process.env.FRONT_END_URL}`}), async(req,res,next)=> {
     try {
-        console.log("Token:", process.env.FRONT_END_URL);
-        console.log("Hi");
-        console.log("Token:", req.user.token);
+        console.log("Token:", req.user.tokens);
         res.redirect(
-            `${process.env.FRONT_END_URL}?accessToken=${req.user.token}`)
+            `${process.env.FRONT_END_URL}?accessToken=${req.user.tokens}`)
     } catch (error) {
         next(error)
     }
