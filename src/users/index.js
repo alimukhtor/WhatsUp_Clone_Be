@@ -101,9 +101,7 @@ userRouter.get("/me", JWTAuthMiddleware, async (req, res, next) => {
 });
 userRouter.put("/me", JWTAuthMiddleware, async (req, res, next) => {
   try {
-    const user = await UserModel.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
+    const user = await UserModel.findByIdAndUpdate(req.user, req.body, {new:true})
     res.send(user);
   } catch (error) {
     next(error);
