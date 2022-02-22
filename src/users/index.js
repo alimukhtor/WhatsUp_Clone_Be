@@ -85,6 +85,8 @@ userRouter.post("/login", async (req, res, next) => {
     next(error);
   }
 });
+
+
 userRouter.get("/me", JWTAuthMiddleware, async (req, res, next) => {
   try {
     const token = req.headers.authorization;
@@ -99,6 +101,7 @@ userRouter.get("/me", JWTAuthMiddleware, async (req, res, next) => {
     next(error);
   }
 });
+
 userRouter.put("/me", JWTAuthMiddleware, async (req, res, next) => {
   try {
     const user = await UserModel.findByIdAndUpdate(req.user, req.body, {new:true})
@@ -108,17 +111,9 @@ userRouter.put("/me", JWTAuthMiddleware, async (req, res, next) => {
   }
 });
 
-userRouter.post(
-  "/me/avatar",
-  JWTAuthMiddleware,
-  parser.single("image"),
-  async (req, res, next) => {
+userRouter.post("/me/avatar", JWTAuthMiddleware, parser.single("image"), async (req, res, next) => {
     try {
-      if (res.status === "201") {
         res.json(req.file);
-      } else {
-        next(createHttpError(401, "Please provide bearer token!"));
-      }
     } catch (error) {
       next(error);
     }
@@ -140,7 +135,9 @@ userRouter.get("/:id", async (req, res, next) => {
   }
 });
 
-userRouter.delete("/logout", async (req, res, next) => {});
+userRouter.delete("/logout",async(req, res)=>  {
+    
+  });;
 
 // userRouter.post("/session/refresh", async (req, res, next) => {});
 
