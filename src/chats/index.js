@@ -8,7 +8,7 @@ chatRouter.get("/", async (req, res, next) => {
   try {
 
     const chats = await chatModel.find({
-        members: { $in: [req.user] },
+        members: req.user ,
       },
      )
     if (chats) {
@@ -42,26 +42,29 @@ chatRouter.get("/:chatId", async (req, res, next) => {
 })
 
 chatRouter.post("/", async (req, res, next) => {
-  try {
-  } catch (error) {
+  try { 
+
+    // req.user is the first member of the chat
+    // req.body.recipient is the second one
+
+    // Check if there is already a Chat where memebrs === [req.user, req.body.recipient]
+    const checkChatExists = await chatModel.findOne({
+      members: { $all: [req.user, req.body.recipient] },
+    });
+  
+    if (checkChatExists) {
+      res.send(checkChatExists);
+    } else {
+      const newChat = new chatModel({
+        members: [req.user, req.body.recipient],
+      });
+      const createdChat = await newChat.save();
+      res.status(201).send(createdChat)
+    
+  }} catch (error) {
     next(error)
   }
 })
 
-chatRouter.put("/:id", async (req, res, next) => {
-  try {
-
-  } catch (error) {
-    next(error)
-  }
-})
-
-chatRouter.delete("/:id", async (req, res, next) => {
-    try {
-    } catch (error) {
-      next(error)
-    }
-  }
-)
 
 export default chatRouter
