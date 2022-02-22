@@ -7,7 +7,7 @@ const MessageSchema = new Schema(
     sender: { type: String, required: true },
     content: {
       text: { type: String, required: true },
-      media: { type: String, required: true },
+      media: { type: String },
     },
   },
   { timestamps: true }
