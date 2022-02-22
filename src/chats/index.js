@@ -1,17 +1,20 @@
 import { Router } from "express"
 import createHttpError from "http-errors"
 import chatModel from "./schema.js"
-
+import { JWTAuthMiddleware } from "../auth/token.js"
 const chatRouter = Router()
 
 chatRouter.get("/", async (req, res, next) => {
-  try {const chatId = req.params.chatId
+  try {
 
-    const chat = await chatModel.find(chatId).populate("members")
-    if (chat) {
-      res.send(chat)
+    const chats = await chatModel.find({
+        members: { $in: [req.user] },
+      },
+     )
+    if (chats) {
+      res.send(chats)
     } else {
-      next(createHttpError(404, `chat with id ${chatId} not found!`))
+      next(createHttpError(404, `chats not found!`))
     }
 
   } catch (error) {
@@ -20,8 +23,18 @@ chatRouter.get("/", async (req, res, next) => {
   }
 })
 
-chatRouter.get("/:id", async (req, res, next) => {
+chatRouter.get("/:chatId", async (req, res, next) => {
   try {
+    const chat = await chatModel.findById(req.params.chatId);
+    if (chat) {
+      if (chat.members.includes(req.user)) {
+        res.send(chat);
+      } else {
+        next(createHttpError(403, "Unauthorized"));
+      }
+    } else {
+      next(createHttpError(404, "not found"));
+    }
 
   } catch (error) {
     next(error)
