@@ -136,7 +136,9 @@ userRouter.get("/:id", async (req, res, next) => {
 });
 
 userRouter.delete("/logout",async(req, res)=>  {
-    
+    res.clearCookie(req.headers.authorization);
+    // console.log(req.headers.authorization);
+    return res.send({message:"Logged out!"});
   });;
 
 // userRouter.post("/session/refresh", async (req, res, next) => {});
