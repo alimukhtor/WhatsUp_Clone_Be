@@ -1,11 +1,18 @@
 import { Router } from "express"
-import createError from "http-errors"
-import ExampleModel from "./schema.js"
+import createHttpError from "http-errors"
+import chatModel from "./schema.js"
 
-const examplesRouter = Router()
+const chatRouter = Router()
 
-examplesRouter.get("/", async (req, res, next) => {
-  try {
+chatRouter.get("/", async (req, res, next) => {
+  try {const chatId = req.params.chatId
+
+    const chat = await chatModel.find(chatId).populate("members")
+    if (chat) {
+      res.send(chat)
+    } else {
+      next(createHttpError(404, `chat with id ${chatId} not found!`))
+    }
 
   } catch (error) {
     console.log(error)
@@ -13,7 +20,7 @@ examplesRouter.get("/", async (req, res, next) => {
   }
 })
 
-examplesRouter.get("/:id", async (req, res, next) => {
+chatRouter.get("/:id", async (req, res, next) => {
   try {
 
   } catch (error) {
@@ -21,14 +28,14 @@ examplesRouter.get("/:id", async (req, res, next) => {
   }
 })
 
-examplesRouter.post("/", async (req, res, next) => {
+chatRouter.post("/", async (req, res, next) => {
   try {
   } catch (error) {
     next(error)
   }
 })
 
-examplesRouter.put("/:id", async (req, res, next) => {
+chatRouter.put("/:id", async (req, res, next) => {
   try {
 
   } catch (error) {
@@ -36,7 +43,7 @@ examplesRouter.put("/:id", async (req, res, next) => {
   }
 })
 
-examplesRouter.delete("/:id", async (req, res, next) => {
+chatRouter.delete("/:id", async (req, res, next) => {
     try {
     } catch (error) {
       next(error)
@@ -44,4 +51,4 @@ examplesRouter.delete("/:id", async (req, res, next) => {
   }
 )
 
-export default examplesRouter
+export default chatRouter
