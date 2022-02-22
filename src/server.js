@@ -5,6 +5,7 @@ import mongoose from 'mongoose'
 import passport from 'passport'
 // import { unauthorizedHandler, forbiddenHandler, catchAllHandler} from './errorHandler/errorHandlers.js'
 import googleStrategy from './auth/oauth.js'
+import chatRouter from './chats/index.js'
 
 
 const server = express()
@@ -22,6 +23,7 @@ server.use(passport.initialize())
 // *************************************** ROUTES ********************************
 
 server.use("/users", userRouter)
+server.use("/chats", chatRouter)
 
 
 
