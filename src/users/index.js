@@ -7,7 +7,7 @@ import passport from "passport";
 import { v2 as Cloudinary } from "cloudinary";
 import multer from "multer";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
-
+import { JWTAuthenticate } from "../auth/tools.js";
 const userRouter = express.Router();
 
 // ***************** CLOUDINARYIMAGE UPLOAD***************
@@ -138,7 +138,7 @@ userRouter.get("/:id", async (req, res, next) => {
 userRouter.delete("/logout",async(req, res)=>  {
     res.clearCookie(req.headers.authorization);
     // console.log(req.headers.authorization);
-    return res.send({message:"Logged out!"});
+    return res.status(204).send({message:"Logged out!"});
   });;
 
 // userRouter.post("/session/refresh", async (req, res, next) => {});
