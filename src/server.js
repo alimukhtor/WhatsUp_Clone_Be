@@ -5,13 +5,14 @@ import mongoose from 'mongoose'
 import passport from 'passport'
 // import { unauthorizedHandler, forbiddenHandler, catchAllHandler} from './errorHandler/errorHandlers.js'
 import googleStrategy from './auth/oauth.js'
-import chatRouter from './chats/index.js'
 
 
 const server = express()
 const port = process.env.PORT || 3001
 
 import userRouter from './users/index.js'
+import chatRouter from './chats/index.js'
+import messageRouter from './message/index.js'
 
 // ************************************* MIDDLEWARES *****************************
 
@@ -24,6 +25,7 @@ server.use(passport.initialize())
 
 server.use("/users", userRouter)
 server.use("/chats", chatRouter)
+server.use("/messages", messageRouter)
 
 
 
