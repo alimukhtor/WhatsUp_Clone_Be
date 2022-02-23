@@ -31,8 +31,13 @@ const parser = multer({ storage: storage });
 
 userRouter.get("/", async (req, res, next) => {
   try {
-    const user = await UserModel.find();
-    res.status(200).send(user);
+    const search = req.query.search
+    const users = await UserModel.find({
+      username:{
+        $regex: new RegExp(search)
+      }
+    })
+    res.send(users)
   } catch (error) {
     next(error);
   }
