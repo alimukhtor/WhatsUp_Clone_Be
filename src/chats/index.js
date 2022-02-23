@@ -1,8 +1,9 @@
-import { Router } from "express"
+import express from "express"
 import createHttpError from "http-errors"
 import chatModel from "./schema.js"
 import { JWTAuthMiddleware } from "../auth/token.js"
-const chatRouter = Router()
+
+const chatRouter = express.Router()
 
 chatRouter.get("/", async (req, res, next) => {
   try {
