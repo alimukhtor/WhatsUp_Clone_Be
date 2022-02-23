@@ -1,5 +1,6 @@
 import express from 'express'
-import MessageModel from './schema.js'
+//import MessageModel from './schema.js'
+export default {}
 
 const messageRouter = express.Router()
 
@@ -23,4 +24,4 @@ messageRouter.post("/", async(req,res,next)=> {
     }
 })
 
-export default messageRouter
+//export default messageRouter

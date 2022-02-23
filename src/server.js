@@ -25,7 +25,7 @@ server.use(passport.initialize())
 
 server.use("/users", userRouter)
 server.use("/chats", chatRouter)
-server.use("/messages", messageRouter)
+//server.use("/messages", messageRouter)
 
 
 
