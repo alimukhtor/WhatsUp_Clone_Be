@@ -9,8 +9,8 @@ chatRouter.get("/", JWTAuthMiddleware, async (req, res, next) => {
 
     const chats = await chatModel.find({
         members: req.user._id ,
-      },
-     )
+      }
+     ).populate('members')
     if (chats) {
       res.send(chats)
     } else {
