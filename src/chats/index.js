@@ -26,6 +26,7 @@ chatRouter.get("/", JWTAuthMiddleware, async (req, res, next) => {
 chatRouter.get("/:chatId", JWTAuthMiddleware, async (req, res, next) => {
   try {
     const chat = await chatModel.findById(req.params.chatId);
+    console.log("CHat:", chat)
     if (chat) {
       if (chat.members.includes(req.user._id)) {
         res.send(chat.messages);
@@ -33,7 +34,7 @@ chatRouter.get("/:chatId", JWTAuthMiddleware, async (req, res, next) => {
         next(createHttpError(403, "Unauthorized"));
       }
     } else {
-      next(createHttpError(404, "not found"));
+      next(createHttpError(404, "User not found"));
     }
 
   } catch (error) {
