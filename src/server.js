@@ -3,12 +3,25 @@ import cors from 'cors'
 import listEndpoints from 'express-list-endpoints'
 import mongoose from 'mongoose'
 import passport from 'passport'
+import {Server} from 'socket.io'
+import { createServer } from "http";
 // import { unauthorizedHandler, forbiddenHandler, catchAllHandler} from './errorHandler/errorHandlers.js'
 import googleStrategy from './auth/oauth.js'
 
 
 const server = express()
 const port = process.env.PORT || 3001
+
+// **************** SOCKET CONNECTIONS *************************
+
+const httpServer = createServer(server)
+const io = new Server(httpServer)
+io.on("connection", (socket)=> {
+  console.log(socket.id)
+})
+
+
+// *************************************************************
 
 import userRouter from './users/index.js'
 import chatRouter from './chats/index.js'
