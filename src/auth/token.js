@@ -16,6 +16,6 @@ export const JWTAuthMiddleware =async(req, res, next)=> {
         }
         
     } catch (error) {
-        next(createHttpError(401, "Author is unauthorized!"))
+        next(createHttpError(401, "User is unauthorized!"))
     }
 }
